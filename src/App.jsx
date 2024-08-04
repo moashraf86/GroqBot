@@ -1,10 +1,13 @@
-import "./App.css";
-import { Button } from "./components/ui/button";
+import { ChatRoom } from "./components/ChatRoom";
+import { ThemeProvider } from "./context/ThemeProvider";
+
 function App() {
   return (
-    <>
-      <Button>Click</Button>
-    </>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="h-screen">
+        <ChatRoom />
+      </div>
+    </ThemeProvider>
   );
 }
 
