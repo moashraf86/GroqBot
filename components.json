@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/shadui",
+    "components": "@/components",
     "utils": "@/utils/shadUtils"
   }
 }
