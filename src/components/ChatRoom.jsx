@@ -37,7 +37,7 @@ export const ChatRoom = () => {
   };
 
   return (
-    <div className="h-full flex flex-col gap-4 container py-4 max-w-5xl">
+    <div className="h-full flex flex-col gap-4 container py-4 max-w-3xl">
       <ChatBox messages={messages} />
       <ChatInput onSend={handleSend} />
     </div>
