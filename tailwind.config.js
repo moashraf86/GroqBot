@@ -6,6 +6,7 @@ module.exports = {
     "./components/**/*.{js,jsx}",
     "./app/**/*.{js,jsx}",
     "./src/**/*.{js,jsx}",
+    "**/*.html",
   ],
   prefix: "",
   theme: {
@@ -71,6 +72,10 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+    },
+    fontFamily: {
+      open: ["Open Sans", "sans-serif"],
+      code: ["Source Code Pro", "monospace"],
     },
   },
   plugins: [require("tailwindcss-animate")],

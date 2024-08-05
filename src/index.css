@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -64,6 +66,35 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-open;
+  }
+
+  ol {
+    @apply list-decimal ms-6 flex flex-col gap-4;
+  }
+
+  ul {
+    @apply list-disc ms-6 flex flex-col gap-4;
+  }
+
+  li:has(ul) > ul,
+  li:has(ol) > ol {
+    @apply ms-8 mt-2;
+  }
+  a {
+    @apply text-blue-600 underline;
+  }
+
+  code {
+    @apply bg-muted text-primary rounded-md px-1 text-wrap text-sm;
+  }
+
+  pre {
+    @apply relative bg-muted text-primary rounded-md p-4 text-sm overflow-auto;
+    @apply before:bg-primary-foreground before:rounded-full before:px-3 before:py-1.5 before:text-xs before:text-primary before:absolute before:content-['copy'] before:top-4 before:right-4 before:font-bold before:cursor-pointer;
+  }
+
+  pre code {
+    @apply bg-transparent block w-full font-code;
   }
 }
