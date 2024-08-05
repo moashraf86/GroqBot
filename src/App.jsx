@@ -4,9 +4,9 @@ import { ThemeProvider } from "./context/ThemeProvider";
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="h-screen">
+      <main className="min-h-screen">
         <ChatRoom />
-      </div>
+      </main>
     </ThemeProvider>
   );
 }
