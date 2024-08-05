@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,8 @@ import { PaperPlaneIcon } from "@radix-ui/react-icons";
  * Define the form schema
  */
 const schema = z.object({
-  input: z.string().min(1, "Message is required"),
+  // check if the input is not space
+  input: z.string().trim().min(1, "Message is required"),
 });
 
 export const ChatInput = ({ onSend }) => {
@@ -29,13 +30,15 @@ export const ChatInput = ({ onSend }) => {
   const onSubmit = (message) => {
     onSend(message.input);
     form.reset();
+    // navigate to the bottom of the chat
+    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex gap-3 items-end"
+        className="flex gap-3 items-end fixed bottom-0 left-0 right-0 p-4 bg-background max-w-3xl mx-auto"
       >
         <FormField
           control={form.control}
@@ -44,6 +47,7 @@ export const ChatInput = ({ onSend }) => {
             <FormItem className="grow">
               <FormControl>
                 <Textarea
+                  className="bg-primary-foreground"
                   placeholder="Message GroqBot..."
                   {...field}
                   onInput={(e) => {
@@ -54,8 +58,6 @@ export const ChatInput = ({ onSend }) => {
                   }}
                 />
               </FormControl>
-
-              <FormMessage />
             </FormItem>
           )}
         />
