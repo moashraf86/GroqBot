@@ -32,6 +32,9 @@ export const ChatInput = ({ onSend }) => {
     form.reset();
     // navigate to the bottom of the chat
     window.scrollTo(0, document.body.scrollHeight);
+    // reset the textarea height
+    const textarea = document.querySelector("textarea");
+    textarea.style.height = "auto";
   };
 
   return (
