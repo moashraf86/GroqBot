@@ -14,6 +14,14 @@ export const ChatRoom = () => {
    * Handle send message to bot
    */
   const handleSend = async (message) => {
+    // send the message of the user to the bot
+    setMessages([
+      ...messages,
+      {
+        role: "user",
+        content: message,
+      },
+    ]);
     const response = await groq.chat.completions.create({
       messages: [
         {
@@ -34,6 +42,8 @@ export const ChatRoom = () => {
         content: response.choices[0].message.content,
       },
     ]);
+    // navigate to the bottom of the chat
+    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (
