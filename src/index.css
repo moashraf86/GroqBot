@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 
 @layer base {
   :root {
@@ -68,32 +68,37 @@
   body {
     @apply bg-background text-foreground font-open;
   }
+}
 
-  ol {
-    @apply list-decimal ms-6 flex flex-col gap-4;
-  }
+/* Markdown Editor style */
+.wmde-markdown {
+  @apply bg-transparent text-foreground;
+}
 
-  ul {
-    @apply list-disc ms-6 flex flex-col gap-4;
-  }
+.wmde-markdown ol {
+  @apply list-decimal pl-4 flex flex-col gap-4;
+}
 
-  li:has(ul) > ul,
-  li:has(ol) > ol {
-    @apply ms-8 mt-2;
-  }
-  a {
-    @apply text-blue-600 underline;
-  }
+.wmde-markdown ul {
+  @apply list-disc pl-4 flex flex-col gap-4;
+}
 
-  code {
-    @apply bg-muted text-primary rounded-md px-1 text-wrap text-sm;
-  }
+.wmde-markdown pre {
+  @apply bg-primary-foreground rounded-md text-sm overflow-auto;
+}
 
-  pre {
-    @apply relative bg-primary-foreground rounded-md p-4 text-sm overflow-auto;
-  }
+.wmde-markdown pre code {
+  @apply bg-transparent block w-full font-code text-primary/75 whitespace-pre;
+}
 
-  pre code {
-    @apply bg-transparent block w-full font-code text-primary/75;
-  }
+.wmde-markdown code {
+  @apply bg-muted text-primary rounded-md py-1 px-2 text-wrap text-sm;
+}
+
+.wmde-markdown a {
+  @apply text-blue-600 underline;
+}
+
+.wmde-markdown blockquote {
+  @apply border-l-4 border-primary-foreground bg-primary-foreground/10 text-primary-foreground p-4 my-4;
 }
