@@ -22,14 +22,20 @@ export const ChatRoom = () => {
         content: message,
       },
     ]);
+
     const response = await groq.chat.completions.create({
       messages: [
         {
           role: "user",
-          content: message,
+          content: `I'm a backend developer. I'm working on a project and I need some help with the following: ${message}`,
+        },
+        {
+          role: "system",
+          content:
+            "1.you're a front-end developer. 2.add language- prefix to pre and code tags classes",
         },
       ],
-      model: "llama3-8b-8192",
+      model: "llama3-70b-8192",
     });
     setMessages([
       ...messages,
@@ -38,7 +44,7 @@ export const ChatRoom = () => {
         content: message,
       },
       {
-        role: "bot",
+        role: "assistant",
         content: response.choices[0].message.content,
       },
     ]);
