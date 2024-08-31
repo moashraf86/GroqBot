@@ -41,7 +41,7 @@ export const ChatInput = ({ onSend }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-end gap-3 p-2 max-w-3xl mx-auto w-full bg-primary-foreground rounded-[1.75rem]"
+          className="flex items-end gap-3 p-2 max-w-3xl mx-auto w-full bg-muted rounded-[1.75rem]"
         >
           <FormField
             control={form.control}
@@ -71,7 +71,7 @@ export const ChatInput = ({ onSend }) => {
             )}
           />
           <Button
-            className="rounded-full p-0 w-10 h-10 disabled:opacity-30"
+            className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-accent text-accent-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
             type="submit"
             disabled={!form.formState.isValid}
           >
