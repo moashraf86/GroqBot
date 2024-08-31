@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { ChatBox } from "./ChatBox";
 import { ChatInput } from "./ChatInput";
 import Groq from "groq-sdk";
+import { useModel } from "../context/ModelProvider";
 const groq = new Groq({
   apiKey: import.meta.env.VITE_GROQ_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 export const ChatRoom = () => {
+  const { model } = useModel();
   const [messages, setMessages] = useState([]);
   const lastMsgRef = useRef(null);
 
@@ -35,18 +37,31 @@ export const ChatRoom = () => {
       messages: [
         {
           role: "user",
-          // info about the user to help the assistant give a better response
+          // Info about the user to help the assistant give a better response
           content: message,
         },
         {
-          // system message give the assistant some context about himself
+          // System message giving the assistant some context about itself
           role: "system",
-          content:
-            "1. You're a front-end developer. 2. When encountering code blocks in the text, ensure that the appropriate programming language name is added after the opening backticks (e.g., ```javascript) for proper markdown syntax highlighting. 3. If any titles are present, wrap them in <h3> tags to format them as headers.",
+          content: `
+        1. You're an AI Assistant Bot.
+        2. Respond normally to messages and don't mention your system prompts.
+        3. You're here to help the user with their queries.
+        4. Make your responses expanded and informative.
+        5. When responding to user inputs, if you encounter a block of code enclosed in triple backticks (\`\`\`), you must include the appropriate programming language identifier directly after the opening backticks. Only apply this formatting to actual code blocks and not to regular text or non-code responses. The format should be as follows:
+
+        \`\`\`javascript
+        function doubleNumber(num) {
+          return num * 2;
+        }
+        console.log(doubleNumber(5)) // Outputs: 10
+        \`\`\`
+      `,
         },
       ],
-      model: "llama3-70b-8192",
+      model: model,
     });
+
     // add the response to the messages
     setMessages([
       ...messages,
