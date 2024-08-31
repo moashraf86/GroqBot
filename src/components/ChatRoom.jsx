@@ -62,9 +62,9 @@ export const ChatRoom = () => {
   };
 
   return (
-    <div className="h-full flex flex-col gap-4 container py-4 max-w-3xl">
+    <main className="flex flex-col gap-4 container py-4 max-w-3xl">
       <ChatBox messages={messages} lastMsgRef={lastMsgRef} />
       <ChatInput onSend={handleSend} />
-    </div>
+    </main>
   );
 };

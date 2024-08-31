@@ -1,12 +1,12 @@
 import { ChatRoom } from "./components/ChatRoom";
+import { Header } from "./components/Header";
 import { ThemeProvider } from "./context/ThemeProvider";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="min-h-screen">
-        <ChatRoom />
-      </main>
+      <Header />
+      <ChatRoom />
     </ThemeProvider>
   );
 }
