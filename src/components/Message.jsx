@@ -12,9 +12,9 @@ export const Message = ({ content, role, lastMsgRef, index }) => {
           <Button
             variant="ghost"
             size="icon"
-            className="hidden mr-2 rounded-full group-hover:flex"
+            className=" min-w-10 opacity-0 mr-2 rounded-full group-hover:opacity-100"
           >
-            <Pencil1Icon />
+            <Pencil1Icon width={18} height={18} />
           </Button>
           <div className="bg-muted text-primary rounded-xl py-2 px-4 inline-block text-base max-w-full">
             <MDEditor.Markdown source={content} />
