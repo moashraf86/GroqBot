@@ -71,6 +71,7 @@ export const ChatInput = ({ onSend }) => {
             )}
           />
           <Button
+            size="icon"
             className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-accent text-accent-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
             type="submit"
             disabled={!form.formState.isValid}
