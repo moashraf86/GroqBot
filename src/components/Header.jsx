@@ -44,7 +44,7 @@ export const Header = () => {
                 <DropdownMenuRadioItem value="gemma2-9b-it">
                   gemma2-9b-it
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="llama3-groq-70b-8192">
+                <DropdownMenuRadioItem value="llama3-groq-70b-8192-tool-use-preview">
                   llama3-groq-70b-8192
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="mixtral-8x7b-32768">
