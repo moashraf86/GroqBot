@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatBox } from "./ChatBox";
 import { ChatInput } from "./ChatInput";
 import Groq from "groq-sdk";
@@ -12,6 +12,10 @@ export const ChatRoom = () => {
   const { model } = useModel();
   const [messages, setMessages] = useState([]);
 
+  useEffect(() => {
+    // scroll to the bottom of the chat box when teh message first loads or updates
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [messages]);
   /**
    * Handle send message to bot
    */
@@ -28,7 +32,6 @@ export const ChatRoom = () => {
         content: "I'm thinking...",
       },
     ]);
-
     try {
       // send the message to the bot and get the response
       const response = await groq.chat.completions.create({
