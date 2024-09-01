@@ -16,11 +16,12 @@ export const Message = ({ content, role }) => {
           >
             <Pencil1Icon width={18} height={18} />
           </Button>
-          <div className="bg-muted text-primary rounded-xl py-2 px-4 inline-block text-base max-w-full">
-            <MDEditor.Markdown source={content} />
+          <div className="bg-muted text-primary rounded-xl py-2 px-4 inline-block text-base max-w-full whitespace-pre-wrap">
+            {content}
           </div>
         </div>
       ) : (
+        // Assistant message
         <div className="flex ass">
           <div className="flex flex-col gap-4 border-l border-primary/30 py-2 pl-5 pr-4 text-base max-w-full">
             <MDEditor.Markdown source={content} />
