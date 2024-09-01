@@ -2,9 +2,8 @@
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-export const Message = ({ content, role }) => {
-  console.log(content, role);
-
+import { Skeleton } from "./ui/skeleton";
+export const Message = ({ content, role, loading }) => {
   return (
     <>
       {role === "user" ? (
@@ -22,9 +21,16 @@ export const Message = ({ content, role }) => {
         </div>
       ) : (
         // Assistant message
-        <div className="flex ass">
-          <div className="flex flex-col gap-4 border-l border-primary/30 py-2 pl-5 pr-4 text-base max-w-full">
-            <MDEditor.Markdown source={content} />
+        <div className="flex">
+          <div className="flex flex-col gap-4 border-l py-2 pl-5 pr-4 text-base min-w-full max-w-full border-primary/30">
+            {loading ? (
+              <div className="flex flex-col gap-2">
+                <Skeleton className="w-3/4 h-3" />
+                <Skeleton className="w-1/2 h-3" />
+              </div>
+            ) : (
+              <MDEditor.Markdown source={content} />
+            )}
           </div>
         </div>
       )}
