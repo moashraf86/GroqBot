@@ -21,7 +21,7 @@ export const Header = () => {
   const { model, setModel } = useModel();
 
   return (
-    <header className="sticky inset-0 bg-background py-4">
+    <header className="sticky inset-0 z-50 bg-background py-4">
       <div className="container px-8 flex items-center justify-between">
         <h1 className="text-2xl font-medium">GroqBot</h1>
         <div className="flex items-center gap-2">
