@@ -2,7 +2,7 @@
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-export const Message = ({ content, role, lastMsgRef, index }) => {
+export const Message = ({ content, role }) => {
   console.log(content, role);
 
   return (
@@ -22,10 +22,7 @@ export const Message = ({ content, role, lastMsgRef, index }) => {
         </div>
       ) : (
         <div className="flex ass">
-          <div
-            ref={index !== 0 ? lastMsgRef : null}
-            className="flex flex-col gap-4 border-l border-primary/30 py-2 pl-5 pr-4 text-base max-w-full"
-          >
+          <div className="flex flex-col gap-4 border-l border-primary/30 py-2 pl-5 pr-4 text-base max-w-full">
             <MDEditor.Markdown source={content} />
           </div>
         </div>
