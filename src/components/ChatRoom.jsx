@@ -4,6 +4,7 @@ import { ChatBox } from "./ChatBox";
 import { ChatInput } from "./ChatInput";
 import Groq from "groq-sdk";
 import { useModel } from "../context/ModelProvider";
+import { useMessages } from "../context/MessagesProvider";
 const groq = new Groq({
   apiKey: import.meta.env.VITE_GROQ_API_KEY,
   dangerouslyAllowBrowser: true,
@@ -11,50 +12,36 @@ const groq = new Groq({
 
 export const ChatRoom = () => {
   const { model } = useModel();
-  const [messages, setMessages] = useState([]);
+  const { messages, dispatch } = useMessages();
   const [loading, setLoading] = useState(false);
   const [currentMsgIndex, setCurrentMsgIndex] = useState(null);
 
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
-    window.scrollTo(0, document.body.scrollHeight);
+    // window.scrollTo(0, document.body.scrollHeight);
   }, [messages]);
 
   /**
    * Handle send message to bot
    */
   const handleSend = async (message) => {
-    // scroll to the bottom of the chat box once the message is sent
-    window.scrollTo(0, document.body.scrollHeight);
+    window.scrollTo(0, document.body.scrollHeight); // scroll to the bottom of the chat box
 
-    // get the index of the new message
-    const newMsgIndex = messages.length + 1;
-    setCurrentMsgIndex(newMsgIndex);
-    // write user message to the chat box first before getting the response
-    setMessages([
-      ...messages,
-      {
-        role: "user",
-        content: message,
-      },
-      {
-        role: "assistant",
-        content: "",
-      },
-    ]);
+    setCurrentMsgIndex(messages.length + 1); // get the current message index
+
+    dispatch({ type: "SEND_MESSAGE", payload: message }); // Send the message to the bot
 
     try {
       setLoading(true);
-      // check network connection
+      // check if the user is offline
       if (!navigator.onLine) {
         throw new Error("No internet connection. Please check your network.");
       }
-      // send the message to the bot and get the response
+      // create a new conversation with the assistant bot
       const response = await groq.chat.completions.create({
         messages: [
           {
             role: "user",
-            // Info about the user to help the assistant give a better response
             content: message,
           },
           {
@@ -80,50 +67,39 @@ export const ChatRoom = () => {
         model: model,
         stream: true,
       });
-
       setLoading(false);
-      /**
-       * Read the response message from the iterator
-       */
+
+      // Get the response iterator from the response object
       const reader = response.iterator();
+
       let responseMessage = "";
-      let lastContent = "";
-      // loop through the iterator to get the response message
+
+      // Loop through the iterator to get the response message
       for await (const chunk of reader) {
+        // Extract the 'delta' object from the chunk
         const { delta } = chunk.choices[0];
-        // check if the delta has content and if it's different from the last content
+
+        // Check if the delta contains new content
         if (delta.content) {
-          if (lastContent !== delta.content) {
-            responseMessage += delta.content;
-            lastContent = delta.content;
+          // Update the response message if the new content is different
+          if (responseMessage !== delta.content) {
+            // Set the response message to the new content
+            responseMessage = delta.content;
+
+            // Dispatch an action to update the assistant's message in the state
+            dispatch({ type: "RECEIVE_MESSAGE", payload: responseMessage });
           }
         }
-        // add the response message to the chat box after each chunk
-        setMessages((prev) => [
-          ...prev.slice(0, prev.length - 1),
-          {
-            role: "assistant",
-            content: responseMessage,
-          },
-        ]);
 
-        // delay the next chunk by 1 second to make the chat more human-like
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        // Delay the next chunk by 30 milliseconds to simulate a more human-like typing effect
+        await new Promise((resolve) => setTimeout(resolve, 30));
       }
     } catch (error) {
-      // add the error message to the chat box
       setLoading(false);
-      setMessages([
-        ...messages,
-        {
-          role: "user",
-          content: message,
-        },
-        {
-          role: "assistant",
-          content: error.message,
-        },
-      ]);
+      dispatch({
+        type: "RECEIVE_MESSAGE",
+        payload: error.message,
+      });
     }
   };
 
