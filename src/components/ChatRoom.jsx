@@ -24,6 +24,10 @@ export const ChatRoom = () => {
    * Handle send message to bot
    */
   const handleSend = async (message) => {
+    // scroll to the bottom of the chat box once the message is sent
+    window.scrollTo(0, document.body.scrollHeight);
+
+    // get the index of the new message
     const newMsgIndex = messages.length + 1;
     setCurrentMsgIndex(newMsgIndex);
     // write user message to the chat box first before getting the response
@@ -35,7 +39,7 @@ export const ChatRoom = () => {
       },
       {
         role: "assistant",
-        content: "Thinking...",
+        content: "",
       },
     ]);
 
