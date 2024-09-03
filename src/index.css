@@ -72,13 +72,28 @@
 
 /* Markdown Editor style */
 .wmde-markdown {
-  @apply bg-transparent text-foreground;
+  @apply bg-transparent text-foreground leading-relaxed;
 }
 
 .wmde-markdown h2 {
   @apply text-2xl border-b-0;
 }
 
+.wmde-markdown p {
+  @apply mt-0 mb-4 leading-loose;
+}
+
+.wmde-markdown li {
+  @apply leading-loose;
+}
+
+.wmde-markdown li p {
+  @apply mt-0 mb-0;
+}
+
+.wmde-markdown li ul {
+  @apply mt-4;
+}
 .wmde-markdown ol {
   @apply list-decimal pl-4 flex flex-col gap-4;
 }
@@ -96,7 +111,7 @@
 }
 
 .wmde-markdown code {
-  @apply bg-muted text-primary rounded-md py-1 px-2 text-wrap text-sm;
+  @apply bg-muted text-primary rounded-md pt-1 px-2 text-wrap text-sm;
 }
 
 .wmde-markdown a {
