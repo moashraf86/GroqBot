@@ -25,7 +25,7 @@ const schema = z.object({
 
 export const CustomizationDialog = ({ isOpen, setIsOpen }) => {
   const { systemPrompts, dispatch } = useSystemPrompts();
-  const [charCount, setCharCount] = useState(systemPrompts.length || 0);
+  const [charCount, setCharCount] = useState(systemPrompts?.length || 0);
 
   /**
    * Define the initial form values and validation schema
