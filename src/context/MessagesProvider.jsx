@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const MessagesContext = createContext();
 
 export const MessagesProvider = ({ children }) => {
   // messages initial state
-  const messagesInitialState = [];
+  const messagesInitialState =
+    JSON.parse(localStorage.getItem("conversation")) || [];
 
   // messages reducer function to manage messages state
   const messagesReducer = (state, action) => {
@@ -40,6 +41,11 @@ export const MessagesProvider = ({ children }) => {
     messagesReducer,
     messagesInitialState
   );
+
+  // sync messages state with local storage
+  useEffect(() => {
+    localStorage.setItem("conversation", JSON.stringify(messages));
+  }, [messages]);
 
   return (
     <MessagesContext.Provider value={{ messages, dispatch }}>
