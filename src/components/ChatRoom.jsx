@@ -6,10 +6,12 @@ import { useModel } from "../context/ModelProvider";
 import { useMessages } from "../context/MessagesProvider";
 import { createConversation } from "../services/groqService";
 import { handleChatStream } from "../services/handleChatStream";
+import { useSystemPrompts } from "../context/SystemPromptsProvider";
 
 export const ChatRoom = () => {
   const { model } = useModel();
   const { messages, dispatch } = useMessages();
+  const { systemPrompts } = useSystemPrompts();
   const [loading, setLoading] = useState(false);
   const [currentMsgIndex, setCurrentMsgIndex] = useState(null);
 
@@ -40,7 +42,7 @@ export const ChatRoom = () => {
       }
 
       // create a new conversation with the assistant bot
-      const response = await createConversation(message, model);
+      const response = await createConversation(message, model, systemPrompts);
 
       setLoading(false);
 
