@@ -17,8 +17,16 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useModel } from "../context/ModelProvider";
+import { useMessages } from "../context/MessagesProvider";
 export const Header = () => {
   const { model, setModel } = useModel();
+  const { dispatch } = useMessages();
+
+  // Clear the chat
+  const handleClearChat = () => {
+    dispatch({ type: "DELETE_MESSAGES" });
+    localStorage.removeItem("conversation");
+  };
 
   return (
     <header className="sticky inset-0 z-50 bg-background py-4">
@@ -59,7 +67,7 @@ export const Header = () => {
                     Customize GroqBot
                   </span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleClearChat}>
                   <span className="flex items-center gap-2">
                     <EraserIcon width="18" height="18" />
                     New Chat
