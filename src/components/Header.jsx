@@ -17,8 +17,19 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useModel } from "../context/ModelProvider";
+import { useMessages } from "../context/MessagesProvider";
+import { useState } from "react";
+import { CustomizationDialog } from "./CustomizationDialog";
 export const Header = () => {
   const { model, setModel } = useModel();
+  const { dispatch } = useMessages();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Clear the chat
+  const handleClearChat = () => {
+    dispatch({ type: "DELETE_MESSAGES" });
+    localStorage.removeItem("conversation");
+  };
 
   return (
     <header className="sticky inset-0 z-50 bg-background py-4">
@@ -53,13 +64,13 @@ export const Header = () => {
               </DropdownMenuRadioGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setIsOpen(true)}>
                   <span className="flex items-center gap-2">
                     <MixerHorizontalIcon width="18" height="18" />
                     Customize GroqBot
                   </span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleClearChat}>
                   <span className="flex items-center gap-2">
                     <EraserIcon width="18" height="18" />
                     New Chat
@@ -70,6 +81,7 @@ export const Header = () => {
           </DropdownMenu>
         </div>
       </div>
+      <CustomizationDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
   );
 };
