@@ -16,6 +16,8 @@ export const ChatRoom = () => {
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
     window.scrollTo(0, document.body.scrollHeight);
+    // store the conversation in the local storage
+    localStorage.setItem("conversation", JSON.stringify(messages));
   }, [messages]);
 
   /**
@@ -50,6 +52,8 @@ export const ChatRoom = () => {
         type: "RECEIVE_MESSAGE",
         payload: error.message,
       });
+    } finally {
+      setCurrentMsgIndex(null);
     }
   };
 
