@@ -38,21 +38,21 @@ export const CustomizationDialog = ({ isOpen, setIsOpen }) => {
 
   // store valid state of the form
   const isValid = form.formState.isValid;
+  // check if the prompts has been changed
+  const isPromptsChanged = systemPrompts !== form.getValues("input");
 
   /**
    * Handle form submission
    */
   const onSubmit = (e) => {
-    if (e.input) {
-      dispatch({ type: "SEND_PROMPT", payload: e.input });
-      localStorage.setItem("systemPrompts", e.input);
-    }
+    dispatch({ type: "SEND_PROMPT", payload: e.input });
+    localStorage.setItem("systemPrompts", e.input);
     setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogHeader className="border-b border-border pb-4">
           <DialogTitle>Customize GroqBot</DialogTitle>
         </DialogHeader>
@@ -94,7 +94,11 @@ export const CustomizationDialog = ({ isOpen, setIsOpen }) => {
                 <Button variant="outline" onClick={() => setIsOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" variant="default" disabled={!isValid}>
+                <Button
+                  type="submit"
+                  variant="default"
+                  disabled={!isValid || !isPromptsChanged}
+                >
                   Save
                 </Button>
               </DialogFooter>
