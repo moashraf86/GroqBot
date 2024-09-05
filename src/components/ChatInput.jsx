@@ -36,6 +36,18 @@ export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
     textarea.style.height = "auto";
   };
 
+  /**
+   * Handle keydown event
+   */
+  const handleKeyDown = (e) => {
+    // Send message on Enter key press (without shift key) and not on mobile
+    const isMobile = window.innerWidth <= 768;
+    if (e.key === "Enter" && !e.shiftKey && !isMobile) {
+      e.preventDefault();
+      form.handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <div className="fixed bottom-0 left-0 right-0 mx-auto bg-background z-50 flex flex-col gap-2 p-3">
       <Form {...form}>
@@ -50,7 +62,7 @@ export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
               <FormItem className="grow">
                 <FormControl>
                   <Textarea
-                    className="border-none bg-transparent w-full focus-visible:ring-0"
+                    className="border-none bg-transparent w-full focus-visible:ring-0 max-h-60 overflow-y-auto"
                     placeholder="Message GroqBot..."
                     {...field}
                     onInput={(e) => {
@@ -59,12 +71,7 @@ export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
                       textarea.style.height = "auto";
                       textarea.style.height = textarea.scrollHeight + "px";
                     }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        form.handleSubmit(onSubmit)();
-                      }
-                    }}
+                    onKeyDown={handleKeyDown}
                   />
                 </FormControl>
               </FormItem>
