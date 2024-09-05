@@ -1,4 +1,4 @@
-export const handleChatStream = async (response, dispatch) => {
+export const handleChatStream = async (response, dispatch, stopFlagFn) => {
   // Get the response iterator from the response object
   const reader = response.iterator();
 
@@ -6,6 +6,10 @@ export const handleChatStream = async (response, dispatch) => {
 
   // Loop through the iterator to get the response message
   for await (const chunk of reader) {
+    // Stop Generating if the user hits the stop button
+    if (stopFlagFn()) {
+      break;
+    }
     // Extract the 'delta' object from the chunk
     const { delta } = chunk.choices[0];
 

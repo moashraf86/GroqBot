@@ -15,7 +15,7 @@ const schema = z.object({
   input: z.string().trim().min(1, "Message is required"),
 });
 
-export const ChatInput = ({ onSend }) => {
+export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
   /**
    * Define the initial form values and validation schema
    */
@@ -70,14 +70,25 @@ export const ChatInput = ({ onSend }) => {
               </FormItem>
             )}
           />
-          <Button
-            size="icon"
-            className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-accent text-accent-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
-            type="submit"
-            disabled={!form.formState.isValid}
-          >
-            <PaperPlaneIcon />
-          </Button>
+          {isGenerating ? (
+            <Button
+              size="icon"
+              className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-primary text-primary-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
+              type="button"
+              onClick={() => (stopFlag.current = true)}
+            >
+              <span className="w-3 h-3 bg-primary-foreground"></span>
+            </Button>
+          ) : (
+            <Button
+              size="icon"
+              className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-accent text-accent-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
+              type="submit"
+              disabled={!form.formState.isValid}
+            >
+              <PaperPlaneIcon />
+            </Button>
+          )}
         </form>
         {/* Copy right footer */}
       </Form>

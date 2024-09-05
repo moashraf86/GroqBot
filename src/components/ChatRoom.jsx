@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatBox } from "./ChatBox";
 import { ChatInput } from "./ChatInput";
 import { useModel } from "../context/ModelProvider";
@@ -13,6 +13,8 @@ export const ChatRoom = () => {
   const { messages, dispatch } = useMessages();
   const { systemPrompts } = useSystemPrompts();
   const [loading, setLoading] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const stopFlag = useRef(false);
   const [currentMsgIndex, setCurrentMsgIndex] = useState(null);
 
   useEffect(() => {
@@ -20,12 +22,15 @@ export const ChatRoom = () => {
     window.scrollTo(0, document.body.scrollHeight);
     // store the conversation in the local storage
     localStorage.setItem("conversation", JSON.stringify(messages));
-  }, [messages]);
+  }, [messages, isGenerating]);
 
+  // let stopFlagFn = () => stopFlag;
   /**
    * Handle send message to bot
    */
   const handleSend = async (message) => {
+    setIsGenerating(true);
+    stopFlag.current = false;
     // scroll to the bottom of the chat box
     window.scrollTo(0, document.body.scrollHeight);
 
@@ -47,7 +52,8 @@ export const ChatRoom = () => {
       setLoading(false);
 
       // Handle the chat stream
-      await handleChatStream(response, dispatch);
+      // if the user hits the stop button, stop generating the response
+      await handleChatStream(response, dispatch, () => stopFlag.current);
     } catch (error) {
       setLoading(false);
       dispatch({
@@ -55,7 +61,8 @@ export const ChatRoom = () => {
         payload: error.message,
       });
     } finally {
-      setCurrentMsgIndex(null);
+      // setCurrentMsgIndex(null);
+      setIsGenerating(false);
     }
   };
 
@@ -65,8 +72,13 @@ export const ChatRoom = () => {
         messages={messages}
         loading={loading}
         currentMsgIndex={currentMsgIndex}
+        isGenerating={isGenerating}
       />
-      <ChatInput onSend={handleSend} />
+      <ChatInput
+        onSend={handleSend}
+        isGenerating={isGenerating}
+        stopFlag={stopFlag}
+      />
     </main>
   );
 };
