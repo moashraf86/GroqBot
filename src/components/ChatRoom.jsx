@@ -16,6 +16,8 @@ export const ChatRoom = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const stopFlag = useRef(false);
   const [currentMsgIndex, setCurrentMsgIndex] = useState(null);
+  const [toEditMsg, setToEditMsg] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
@@ -52,7 +54,6 @@ export const ChatRoom = () => {
       setLoading(false);
 
       // Handle the chat stream
-      // if the user hits the stop button, stop generating the response
       await handleChatStream(response, dispatch, () => stopFlag.current);
     } catch (error) {
       setLoading(false);
@@ -61,8 +62,9 @@ export const ChatRoom = () => {
         payload: error.message,
       });
     } finally {
-      // setCurrentMsgIndex(null);
       setIsGenerating(false);
+      setIsEditing(false);
+      setToEditMsg(null);
     }
   };
 
@@ -73,11 +75,17 @@ export const ChatRoom = () => {
         loading={loading}
         currentMsgIndex={currentMsgIndex}
         isGenerating={isGenerating}
+        setIsEditing={setIsEditing}
+        setToEditMsg={setToEditMsg}
       />
       <ChatInput
         onSend={handleSend}
         isGenerating={isGenerating}
         stopFlag={stopFlag}
+        isEditing={isEditing}
+				setIsEditing={setIsEditing}
+        toEditMsg={toEditMsg}
+				setToEditMsg={setToEditMsg}
       />
     </main>
   );
