@@ -3,7 +3,24 @@ import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
 import { CopyIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import { Skeleton } from "./ui/skeleton";
-export const Message = ({ content, role, loading, isGenerating, lastMsg }) => {
+export const Message = ({
+  content,
+  role,
+  loading,
+  isGenerating,
+  lastResponse,
+  lastMessage,
+  setIsEditing,
+  setToEditMsg,
+}) => {
+  /**
+   * Handle edit message
+   */
+  const handleEditMessage = (message) => {
+    setIsEditing(true);
+    setToEditMsg(message);
+  };
+
   /**
    * Copy message to clipboard on button click
    */
@@ -16,12 +33,16 @@ export const Message = ({ content, role, loading, isGenerating, lastMsg }) => {
       {role === "user" ? (
         <div className="flex max-w-lg self-end group">
           <Button
+            onClick={() => handleEditMessage(content)}
             variant="ghost"
             size="icon"
-            className=" min-w-10 opacity-0 mr-2 rounded-full group-hover:opacity-100"
+            className={` min-w-10 ${
+              !lastMessage && "opacity-0"
+            } mr-2 rounded-full group-hover:opacity-100 `}
           >
             <Pencil1Icon width={18} height={18} />
           </Button>
+
           <div className="bg-muted text-primary rounded-xl py-2 px-4 inline-block text-base max-w-full whitespace-pre-wrap">
             {content}
           </div>
@@ -42,7 +63,7 @@ export const Message = ({ content, role, loading, isGenerating, lastMsg }) => {
             )}
           </div>
           {/* Response Toolbar */}
-          {!lastMsg ? (
+          {!lastResponse ? (
             <div className="opacity-0 group-hover:opacity-100 flex gap-2">
               <Button
                 title="Copy"

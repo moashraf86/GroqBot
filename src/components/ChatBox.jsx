@@ -6,16 +6,22 @@ export const ChatBox = ({
   loading,
   currentMsgIndex,
   isGenerating,
+  setIsEditing,
+  setToEditMsg,
 }) => {
   return (
     <div className="flex flex-col gap-8 grow pb-24">
       {messages.map((message, index) => (
         <Message
           key={index}
+          index={index}
           {...message}
           loading={loading && index === currentMsgIndex}
-          lastMsg={index === messages.length - 1}
+          lastMessage={index === messages.length - 2}
+          lastResponse={index === messages.length - 1}
           isGenerating={isGenerating}
+          setIsEditing={setIsEditing}
+          setToEditMsg={setToEditMsg}
         />
       ))}
     </div>

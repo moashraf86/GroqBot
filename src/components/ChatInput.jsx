@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
+import { useEffect, useRef } from "react";
 
 /**
  * Define the form schema
@@ -15,7 +16,17 @@ const schema = z.object({
   input: z.string().trim().min(1, "Message is required"),
 });
 
-export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
+export const ChatInput = ({
+  onSend,
+  isGenerating,
+  stopFlag,
+  toEditMsg,
+  isEditing,
+  setToEditMsg,
+  setIsEditing,
+}) => {
+  const textareaRef = useRef(null);
+
   /**
    * Define the initial form values and validation schema
    */
@@ -32,10 +43,24 @@ export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
     onSend(message.input);
     form.reset();
     // reset the textarea height
-    const textarea = document.querySelector("textarea");
-    textarea.style.height = "auto";
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
   };
 
+  /**
+   * Handle form input
+   */
+  const handleFormInput = (e) => {
+    form.setValue("input", e.target.value);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+    // clear ToEditMsg when the user starts typing
+    setToEditMsg(null);
+    setIsEditing(false);
+  };
   /**
    * Handle keydown event
    */
@@ -48,6 +73,27 @@ export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
     }
   };
 
+  /**
+   * Sync input values with toEditMsg
+   */
+  useEffect(() => {
+    let Timer;
+    if (toEditMsg && isEditing) {
+      form.setValue("input", toEditMsg); // set the input value to the toEditMsg
+      form.trigger("input"); // trigger the validation
+
+      // resize the textarea to fit the content
+      Timer = setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.style.height = "auto";
+          textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+      }, 0);
+    }
+    // clean up
+    return () => clearTimeout(Timer);
+  }, [toEditMsg, isEditing]);
+
   return (
     <div className="fixed bottom-0 left-0 right-0 mx-auto bg-background z-50 flex flex-col gap-2 p-3">
       <Form {...form}>
@@ -59,18 +105,13 @@ export const ChatInput = ({ onSend, isGenerating, stopFlag }) => {
             control={form.control}
             name="input"
             render={({ field }) => (
-              <FormItem className="grow">
-                <FormControl>
+              <FormItem className="grow grow-wrap">
+                <FormControl ref={textareaRef}>
                   <Textarea
-                    className="border-none bg-transparent w-full focus-visible:ring-0 max-h-60 overflow-y-auto"
+                    className="border-none bg-transparent w-full focus-visible:ring-0 max-h-40 overflow-y-auto"
                     placeholder="Message GroqBot..."
                     {...field}
-                    onInput={(e) => {
-                      field.onChange(e);
-                      const textarea = e.target;
-                      textarea.style.height = "auto";
-                      textarea.style.height = textarea.scrollHeight + "px";
-                    }}
+                    onInput={(e) => handleFormInput(e)}
                     onKeyDown={handleKeyDown}
                   />
                 </FormControl>
