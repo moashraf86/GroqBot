@@ -82,9 +82,10 @@ export const ChatInput = ({
       form.setValue("input", toEditMsg); // set the input value to the toEditMsg
       form.trigger("input"); // trigger the validation
 
-      // resize the textarea to fit the content
+      // resize the textarea to fit the content & apply focus
       Timer = setTimeout(() => {
         if (textareaRef.current) {
+          textareaRef.current.focus();
           textareaRef.current.style.height = "auto";
           textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
@@ -95,7 +96,7 @@ export const ChatInput = ({
   }, [toEditMsg, isEditing]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 mx-auto bg-background z-50 flex flex-col gap-2 p-3">
+    <div className="sticky bottom-0 left-0 right-0 bg-background z-50 flex flex-col gap-2 p-3">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

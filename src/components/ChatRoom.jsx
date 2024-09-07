@@ -69,7 +69,7 @@ export const ChatRoom = () => {
   };
 
   return (
-    <main className="flex flex-col gap-4 container py-4 max-w-3xl">
+    <main className="flex flex-col gap-4 max-w-3xl mx-auto">
       <ChatBox
         messages={messages}
         loading={loading}
@@ -83,9 +83,9 @@ export const ChatRoom = () => {
         isGenerating={isGenerating}
         stopFlag={stopFlag}
         isEditing={isEditing}
-				setIsEditing={setIsEditing}
+        setIsEditing={setIsEditing}
         toEditMsg={toEditMsg}
-				setToEditMsg={setToEditMsg}
+        setToEditMsg={setToEditMsg}
       />
     </main>
   );
