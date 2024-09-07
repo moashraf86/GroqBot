@@ -82,9 +82,10 @@ export const ChatInput = ({
       form.setValue("input", toEditMsg); // set the input value to the toEditMsg
       form.trigger("input"); // trigger the validation
 
-      // resize the textarea to fit the content
+      // resize the textarea to fit the content & apply focus
       Timer = setTimeout(() => {
         if (textareaRef.current) {
+          textareaRef.current.focus();
           textareaRef.current.style.height = "auto";
           textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
