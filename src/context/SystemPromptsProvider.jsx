@@ -5,7 +5,10 @@ const SystemPromptsContext = createContext();
 
 export const SystemPromptsProvider = ({ children }) => {
   // System Prompts initial state
-  const systemPromptsInitialState = "" || localStorage.getItem("systemPrompts");
+  const systemPromptsInitialState =
+    localStorage.getItem("systemPrompts") === "null"
+      ? ""
+      : localStorage.getItem("systemPrompts");
 
   // System Prompts Reducer
   const systemPromptsReducer = (state, action) => {
