@@ -84,14 +84,10 @@ export const Message = ({
                 title="Copy"
                 variant="ghost"
                 size="icon"
-                className="w-7 h-7"
+                className="size-8"
                 onClick={copyToClipboard}
               >
-                <CopyIcon
-                  width={16}
-                  height={16}
-                  className="inline-block text-primary/70"
-                />
+                <CopyIcon className="inline-block text-primary/70 size-[18px]" />
               </Button>
             </div>
           ) : (
@@ -103,35 +99,23 @@ export const Message = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-7 h-7"
+                className="size-8"
                 onClick={copyToClipboard}
               >
-                <CopyIcon
-                  width={16}
-                  height={16}
-                  className="inline-block text-primary/70"
-                />
+                <CopyIcon className="inline-block text-primary/70 size-[18px]" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-7 h-7"
+                className="size-8"
                 onClick={() => onRegenerateResponse()}
               >
-                <UpdateIcon
-                  width={16}
-                  height={16}
-                  className="inline-block text-primary/70"
-                />
+                <UpdateIcon className="inline-block text-primary/70 size-[18px]" />
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="w-7 h-7">
-                    <MixerHorizontalIcon
-                      width={16}
-                      height={16}
-                      className="inline-block text-primary/70"
-                    />
+                  <Button variant="ghost" size="icon" className="size-8">
+                    <MixerHorizontalIcon className="inline-block text-primary/70 size-[18px]" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
