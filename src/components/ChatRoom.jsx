@@ -22,25 +22,32 @@ export const ChatRoom = () => {
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
     window.scrollTo(0, document.body.scrollHeight);
+
     // store the conversation in the local storage
     localStorage.setItem("conversation", JSON.stringify(messages));
   }, [messages, isGenerating]);
 
-  // let stopFlagFn = () => stopFlag;
   /**
    * Handle send message to bot
    */
   const handleSend = async (message) => {
+    // set isGenerating to true
     setIsGenerating(true);
+
+    // set stopFlag to false
     stopFlag.current = false;
+
     // scroll to the bottom of the chat box
     window.scrollTo(0, document.body.scrollHeight);
 
-    setCurrentMsgIndex(messages.length + 1); // get the current message index
+    // set currentMsgIndex to messages.length + 1
+    setCurrentMsgIndex(messages.length + 1);
 
-    dispatch({ type: "SEND_MESSAGE", payload: message }); // Send the message to the bot
+    // dispatch the message to the bot
+    dispatch({ type: "SEND_MESSAGE", payload: message });
 
     try {
+      // set loading to true
       setLoading(true);
 
       // check if the user is offline
@@ -51,12 +58,16 @@ export const ChatRoom = () => {
       // create a new conversation with the assistant bot
       const response = await createConversation(message, model, systemPrompts);
 
+      // set loading to false
       setLoading(false);
 
       // Handle the chat stream
       await handleChatStream(response, dispatch, () => stopFlag.current);
     } catch (error) {
+      // set loading to false
       setLoading(false);
+
+      // receive the error message
       dispatch({
         type: "RECEIVE_MESSAGE",
         payload: error.message,
@@ -65,6 +76,66 @@ export const ChatRoom = () => {
       setIsGenerating(false);
       setIsEditing(false);
       setToEditMsg(null);
+      setCurrentMsgIndex(null);
+    }
+  };
+
+  /**
+   * Handle regenerate response
+   */
+  const handleRegenerateResponse = async () => {
+    // Get the last user message
+    const lastUserMessage = messages[messages.length - 2].content;
+
+    // Delete the last pair of messages (user and assistant)
+    dispatch({ type: "DELETE_LAST_PAIR_MESSAGES" });
+
+    // Set isGenerating to true
+    setIsGenerating(true);
+
+    // Set stopFlag to false
+    stopFlag.current = false;
+
+    // Set currentMsgIndex to messages.length
+    setCurrentMsgIndex(messages.length - 1);
+
+    // Dispatch the message to the bot
+    dispatch({ type: "SEND_MESSAGE", payload: lastUserMessage });
+
+    try {
+      // set loading to true
+      setLoading(true);
+
+      // check if the user is offline
+      if (!navigator.onLine) {
+        throw new Error("No internet connection. Please check your network.");
+      }
+
+      // create a new conversation with the assistant bot
+      const response = await createConversation(
+        lastUserMessage,
+        model,
+        systemPrompts
+      );
+
+      // set loading to false
+      setLoading(false);
+
+      // Handle the chat stream
+      await handleChatStream(response, dispatch, () => stopFlag.current);
+    } catch (error) {
+      // set loading to false
+      setLoading(false);
+      // receive the error message
+      dispatch({
+        type: "RECEIVE_MESSAGE",
+        payload: error.message,
+      });
+    } finally {
+      setIsGenerating(false);
+      setIsEditing(false);
+      setToEditMsg(null);
+      setCurrentMsgIndex(null);
     }
   };
 
@@ -77,6 +148,7 @@ export const ChatRoom = () => {
         isGenerating={isGenerating}
         setIsEditing={setIsEditing}
         setToEditMsg={setToEditMsg}
+        onRegenerateResponse={handleRegenerateResponse}
       />
       <ChatInput
         onSend={handleSend}

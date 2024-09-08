@@ -29,6 +29,9 @@ export const MessagesProvider = ({ children }) => {
             ? { ...message, content: message.content + action.payload }
             : message
         );
+      case "DELETE_LAST_PAIR_MESSAGES":
+        // remove last 2 messages from the messages array (user and assistant)
+        return state.slice(0, -2);
       case "DELETE_MESSAGES":
         return [];
       default:
