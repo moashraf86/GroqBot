@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
-import { CopyIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { CopyIcon, Pencil1Icon, UpdateIcon } from "@radix-ui/react-icons";
 import { Skeleton } from "./ui/skeleton";
 export const Message = ({
   content,
@@ -12,6 +12,7 @@ export const Message = ({
   lastMessage,
   setIsEditing,
   setToEditMsg,
+  onRegenerateResponse,
 }) => {
   /**
    * Handle edit message
@@ -92,6 +93,18 @@ export const Message = ({
                 onClick={copyToClipboard}
               >
                 <CopyIcon
+                  width={16}
+                  height={16}
+                  className="inline-block text-primary/70"
+                />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-7 h-7"
+                onClick={() => onRegenerateResponse()}
+              >
+                <UpdateIcon
                   width={16}
                   height={16}
                   className="inline-block text-primary/70"

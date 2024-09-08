@@ -8,6 +8,7 @@ export const ChatBox = ({
   isGenerating,
   setIsEditing,
   setToEditMsg,
+  onRegenerateResponse,
 }) => {
   return (
     <div className="container flex flex-col gap-8 grow pb-4">
@@ -22,6 +23,7 @@ export const ChatBox = ({
           isGenerating={isGenerating}
           setIsEditing={setIsEditing}
           setToEditMsg={setToEditMsg}
+          onRegenerateResponse={onRegenerateResponse}
         />
       ))}
     </div>
