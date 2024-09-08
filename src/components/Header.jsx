@@ -43,7 +43,7 @@ export const Header = () => {
                 <PersonIcon width="18" height="18" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="min-w-[15rem]">
               <DropdownMenuLabel className="uppercase tracking-wide text-xs font-bold text-primary/70">
                 Language Models
               </DropdownMenuLabel>
