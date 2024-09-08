@@ -6,7 +6,12 @@ const groq = new Groq({
 });
 
 // create a new conversation with the assistant bot
-export const createConversation = async (message, model, systemPrompts) => {
+export const createConversation = async (
+  message,
+  model,
+  systemPrompts,
+  modifyPrompt
+) => {
   const response = await groq.chat.completions.create({
     messages: [
       {
@@ -28,7 +33,9 @@ export const createConversation = async (message, model, systemPrompts) => {
 			}
 			console.log(doubleNumber(5)) // Outputs: 10
 			\`\`\`
-		` + systemPrompts,
+		` +
+          systemPrompts +
+          modifyPrompt,
       },
     ],
     model: model,
