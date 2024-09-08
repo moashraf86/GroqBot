@@ -83,7 +83,7 @@ export const ChatRoom = () => {
   /**
    * Handle regenerate response
    */
-  const handleRegenerateResponse = async () => {
+  const handleRegenerateResponse = async (modifyPrompt) => {
     // Get the last user message
     const lastUserMessage = messages[messages.length - 2].content;
 
@@ -115,7 +115,8 @@ export const ChatRoom = () => {
       const response = await createConversation(
         lastUserMessage,
         model,
-        systemPrompts
+        systemPrompts,
+        modifyPrompt
       );
 
       // set loading to false
