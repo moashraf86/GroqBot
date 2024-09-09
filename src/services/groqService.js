@@ -8,6 +8,7 @@ const groq = new Groq({
 // create a new conversation with the assistant bot
 export const createConversation = async (
   message,
+  chatContext,
   model,
   systemPrompts,
   modifyPrompt
@@ -21,21 +22,33 @@ export const createConversation = async (
       {
         // System message giving the assistant some context about itself
         role: "system",
-        content:
-          `
-			Use the following guidelines to respond to user inputs:
-			- Put titles in <h3> tags if exists.
-			- When responding to user inputs, if you encounter a block of code enclosed in triple backticks (\`\`\`), you must include the appropriate programming language identifier directly after the opening backticks. Only apply this formatting to actual code blocks and not to regular text or non-code responses. The format should be as follows:
+        content: `
+					You are a helpful assistant. Follow these guidelines when responding to user inputs:
 
-			\`\`\`javascript
-			function doubleNumber(num) {
-				return num * 2;
-			}
-			console.log(doubleNumber(5)) // Outputs: 10
-			\`\`\`
-		` +
-          systemPrompts +
-          modifyPrompt,
+					1. **Titles**: Use <h3> tags for headings when necessary to organize information clearly.
+
+					2. **Code Blocks**: If your response includes code, format it with triple backticks (\`\`\`) and specify the programming language. For example:
+
+						\`\`\`javascript
+						function doubleNumber(num) {
+							return num * 2;
+						}
+						console.log(doubleNumber(5)); // Outputs: 10
+						\`\`\`
+
+					3. **Clarity**: Ensure your responses are clear and concise, without unnecessary details.
+
+					4. **User Preferences**: Adjust your behavior according to the following user preferences:
+						${systemPrompts}
+
+					5. **Tone and Modifications**: Modify the response based on the following request:
+						${modifyPrompt}
+
+					6. **Conversation Context**: Use the following conversation context for generating your response:
+						${chatContext}
+
+					Aim to provide structured, accurate, and user-friendly responses while following user preferences.
+				`,
       },
     ],
     model: model,
