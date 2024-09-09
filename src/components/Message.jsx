@@ -127,6 +127,7 @@ export const Message = ({
                     onValueChange={(value) => onRegenerateResponse(value)}
                   >
                     <DropdownMenuRadioItem
+                      checkIcon={false}
                       className="flex items-center gap-2"
                       value="Make the response shorter by removing unnecessary information, focusing only on key points."
                     >
@@ -147,6 +148,7 @@ export const Message = ({
                       Shorter
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem
+                      checkIcon={false}
                       className="flex items-center gap-2"
                       value="Expand the response by adding more details, explanations, or examples."
                     >
@@ -167,6 +169,7 @@ export const Message = ({
                       Longer
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem
+                      checkIcon={false}
                       className="flex items-center gap-2"
                       value="Simplify the response by using clear, basic language and avoiding technical jargon."
                     >
@@ -187,6 +190,7 @@ export const Message = ({
                       Simpler
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem
+                      checkIcon={false}
                       className="flex items-center gap-2"
                       value="Adjust the tone to be more casual, conversational, and relaxed."
                     >
@@ -207,6 +211,7 @@ export const Message = ({
                       More Casual
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem
+                      checkIcon={false}
                       className="flex items-center gap-2"
                       value="Make the tone more professional, formal, and suitable for business or official communication."
                     >
