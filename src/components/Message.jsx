@@ -12,8 +12,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuGroup,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
@@ -123,11 +123,12 @@ export const Message = ({
                     Modify Response
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem
+                  <DropdownMenuRadioGroup
+                    onValueChange={(value) => onRegenerateResponse(value)}
+                  >
+                    <DropdownMenuRadioItem
                       className="flex items-center gap-2"
                       value="Make the response shorter by removing unnecessary information, focusing only on key points."
-                      onSelect={(value) => onRegenerateResponse(value)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -144,11 +145,10 @@ export const Message = ({
                         />
                       </svg>
                       Shorter
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
                       className="flex items-center gap-2"
                       value="Expand the response by adding more details, explanations, or examples."
-                      onSelect={(value) => onRegenerateResponse(value)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -165,11 +165,10 @@ export const Message = ({
                         />
                       </svg>
                       Longer
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
                       className="flex items-center gap-2"
                       value="Simplify the response by using clear, basic language and avoiding technical jargon."
-                      onSelect={(value) => onRegenerateResponse(value)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -186,11 +185,10 @@ export const Message = ({
                         />
                       </svg>
                       Simpler
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
                       className="flex items-center gap-2"
                       value="Adjust the tone to be more casual, conversational, and relaxed."
-                      onSelect={(value) => onRegenerateResponse(value)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -207,11 +205,10 @@ export const Message = ({
                         />
                       </svg>
                       More Casual
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
                       className="flex items-center gap-2"
                       value="Make the tone more professional, formal, and suitable for business or official communication."
-                      onSelect={(value) => onRegenerateResponse(value)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -228,8 +225,8 @@ export const Message = ({
                         />
                       </svg>
                       More Professional
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
