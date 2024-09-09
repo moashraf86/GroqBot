@@ -46,6 +46,9 @@ export const ChatRoom = () => {
     // dispatch the message to the bot
     dispatch({ type: "SEND_MESSAGE", payload: message });
 
+    // Get the chat context from the previous messages
+    const chatContext = messages.map((msg) => msg.content).join("\n");
+
     try {
       // set loading to true
       setLoading(true);
@@ -56,7 +59,12 @@ export const ChatRoom = () => {
       }
 
       // create a new conversation with the assistant bot
-      const response = await createConversation(message, model, systemPrompts);
+      const response = await createConversation(
+        message,
+        chatContext,
+        model,
+        systemPrompts
+      );
 
       // set loading to false
       setLoading(false);
@@ -102,10 +110,12 @@ export const ChatRoom = () => {
     // Dispatch the message to the bot
     dispatch({ type: "SEND_MESSAGE", payload: lastUserMessage });
 
+    // Get the chat context from the previous messages
+    const chatContext = messages.map((msg) => msg.content).join("\n");
+
     try {
       // set loading to true
       setLoading(true);
-
       // check if the user is offline
       if (!navigator.onLine) {
         throw new Error("No internet connection. Please check your network.");
@@ -114,6 +124,7 @@ export const ChatRoom = () => {
       // create a new conversation with the assistant bot
       const response = await createConversation(
         lastUserMessage,
+        chatContext,
         model,
         systemPrompts,
         modifyPrompt
