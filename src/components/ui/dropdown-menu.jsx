@@ -110,20 +110,24 @@ DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName;
 
 const DropdownMenuRadioItem = React.forwardRef(
-  ({ className, children, ...props }, ref) => (
+  ({ className, children, checkIcon = true, ...props }, ref) => (
     <DropdownMenuPrimitive.RadioItem
       ref={ref}
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-base font-medium outline-none transition-colors text-primary hover:bg-muted focus:bg-muted aria-checked:bg-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        `relative flex cursor-default select-none items-center rounded-sm py-1.5 ${
+          checkIcon ? "pl-8" : "pl-2"
+        } pr-2 text-base font-medium outline-none transition-colors text-primary hover:bg-muted focus:bg-muted aria-checked:bg-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50`,
         className
       )}
       {...props}
     >
-      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <DropdownMenuPrimitive.ItemIndicator>
-          <CheckIcon className="h-4 w-4 fill-current" />
-        </DropdownMenuPrimitive.ItemIndicator>
-      </span>
+      {checkIcon && (
+        <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+          <DropdownMenuPrimitive.ItemIndicator>
+            <CheckIcon className="h-4 w-4 fill-current" />
+          </DropdownMenuPrimitive.ItemIndicator>
+        </span>
+      )}
       {children}
     </DropdownMenuPrimitive.RadioItem>
   )
