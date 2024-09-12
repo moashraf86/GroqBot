@@ -24,6 +24,7 @@ export const ChatInput = ({
   isEditing,
   setToEditMsg,
   setIsEditing,
+  selectedQuestion,
 }) => {
   const textareaRef = useRef(null);
 
@@ -77,23 +78,26 @@ export const ChatInput = ({
    * Sync input values with toEditMsg
    */
   useEffect(() => {
-    let Timer;
     if (toEditMsg && isEditing) {
       form.setValue("input", toEditMsg); // set the input value to the toEditMsg
       form.trigger("input"); // trigger the validation
-
-      // resize the textarea to fit the content & apply focus
-      Timer = setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.focus();
-          textareaRef.current.style.height = "auto";
-          textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
-      }, 0);
+    }
+    // resize the textarea to fit the content & apply focus
+    const Timer = setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.style.height = "auto";
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      }
+    }, 0);
+    // set Selected Question
+    if (selectedQuestion) {
+      form.setValue("input", selectedQuestion);
+      form.trigger("input");
     }
     // clean up
     return () => clearTimeout(Timer);
-  }, [toEditMsg, isEditing]);
+  }, [toEditMsg, isEditing, selectedQuestion]);
 
   return (
     <div className="sticky bottom-0 left-0 right-0 bg-background z-50 flex flex-col gap-2 p-3">

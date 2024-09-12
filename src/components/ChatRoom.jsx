@@ -7,17 +7,18 @@ import { useMessages } from "../context/MessagesProvider";
 import { createConversation } from "../services/groqService";
 import { handleChatStream } from "../services/handleChatStream";
 import { useSystemPrompts } from "../context/SystemPromptsProvider";
+import { IntroSection } from "./IntroSection";
 
-export const ChatRoom = () => {
+export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   const { model } = useModel();
   const { messages, dispatch } = useMessages();
   const { systemPrompts } = useSystemPrompts();
   const [loading, setLoading] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
   const stopFlag = useRef(false);
   const [currentMsgIndex, setCurrentMsgIndex] = useState(null);
   const [toEditMsg, setToEditMsg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
@@ -85,6 +86,7 @@ export const ChatRoom = () => {
       setIsEditing(false);
       setToEditMsg(null);
       setCurrentMsgIndex(null);
+      setSelectedQuestion(null);
     }
   };
 
@@ -148,20 +150,26 @@ export const ChatRoom = () => {
       setIsEditing(false);
       setToEditMsg(null);
       setCurrentMsgIndex(null);
+      setSelectedQuestion(null);
     }
   };
 
   return (
     <main className="flex flex-col gap-4 max-w-3xl mx-auto">
-      <ChatBox
-        messages={messages}
-        loading={loading}
-        currentMsgIndex={currentMsgIndex}
-        isGenerating={isGenerating}
-        setIsEditing={setIsEditing}
-        setToEditMsg={setToEditMsg}
-        onRegenerateResponse={handleRegenerateResponse}
-      />
+      {!messages || messages.length === 0 ? (
+        <IntroSection setSelectedQuestion={setSelectedQuestion} />
+      ) : null}
+      {messages && messages.length > 0 && (
+        <ChatBox
+          messages={messages}
+          loading={loading}
+          currentMsgIndex={currentMsgIndex}
+          isGenerating={isGenerating}
+          setIsEditing={setIsEditing}
+          setToEditMsg={setToEditMsg}
+          onRegenerateResponse={handleRegenerateResponse}
+        />
+      )}
       <ChatInput
         onSend={handleSend}
         isGenerating={isGenerating}
@@ -169,6 +177,7 @@ export const ChatRoom = () => {
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         toEditMsg={toEditMsg}
+        selectedQuestion={selectedQuestion}
         setToEditMsg={setToEditMsg}
       />
     </main>
