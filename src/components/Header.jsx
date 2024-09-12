@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   EraserIcon,
   MixerHorizontalIcon,
@@ -20,13 +21,14 @@ import { useModel } from "../context/ModelProvider";
 import { useMessages } from "../context/MessagesProvider";
 import { useState } from "react";
 import { CustomizationDialog } from "./CustomizationDialog";
-export const Header = () => {
+export const Header = ({ setIsGenerating }) => {
   const { model, setModel } = useModel();
   const { dispatch } = useMessages();
   const [isOpen, setIsOpen] = useState(false);
 
   // Clear the chat
   const handleClearChat = () => {
+    setIsGenerating(false);
     dispatch({ type: "DELETE_MESSAGES" });
     localStorage.removeItem("conversation");
   };
