@@ -125,3 +125,7 @@
 .wmde-markdown blockquote {
   @apply border-l-4 border-primary-foreground bg-primary-foreground/10 text-primary-foreground p-4 my-4;
 }
+
+.wmde-markdown hr {
+  @apply hidden;
+}
