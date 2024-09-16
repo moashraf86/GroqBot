@@ -12,6 +12,8 @@ import {
   TooltipProvider,
 } from "./tooltip";
 
+const windowSize = window.innerWidth;
+
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
@@ -50,7 +52,7 @@ const Button = React.forwardRef(
         {...props}
       />
     );
-    return title ? (
+    return title && windowSize > 768 ? (
       <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger asChild>{btnElement}</TooltipTrigger>
