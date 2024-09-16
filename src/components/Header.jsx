@@ -36,7 +36,10 @@ export const Header = ({ setIsGenerating }) => {
   return (
     <header className="sticky inset-0 z-50 bg-background py-4">
       <div className="container md:px-8 flex items-center justify-between">
-        <h1 className="text-2xl font-medium">GroqBot</h1>
+        <h1 className="text-2xl font-bold uppercase text-primary">
+          <span className="text-accent font-open font-black ">//</span>
+          GroqBot
+        </h1>
         <div className="flex items-center gap-2">
           <ThemeToggler />
           <DropdownMenu>
