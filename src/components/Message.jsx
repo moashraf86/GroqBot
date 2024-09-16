@@ -48,6 +48,7 @@ export const Message = ({
       {role === "user" ? (
         <div className="flex max-w-lg self-end group">
           <Button
+            title="Edit Text"
             onClick={() => handleEditMessage(content)}
             variant="ghost"
             size="icon"
@@ -97,6 +98,7 @@ export const Message = ({
               }`}
             >
               <Button
+                title="Copy"
                 variant="ghost"
                 size="icon"
                 className="size-8"
@@ -105,6 +107,7 @@ export const Message = ({
                 <CopyIcon className="inline-block text-primary/70 size-[18px]" />
               </Button>
               <Button
+                title="Regenerate Response"
                 variant="ghost"
                 size="icon"
                 className="size-8"
@@ -114,7 +117,12 @@ export const Message = ({
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="size-8">
+                  <Button
+                    title="Modify Response"
+                    variant="ghost"
+                    size="icon"
+                    className="size-8"
+                  >
                     <MixerHorizontalIcon className="inline-block text-primary/70 size-[18px]" />
                   </Button>
                 </DropdownMenuTrigger>

@@ -44,7 +44,12 @@ export const Header = ({ setIsGenerating }) => {
           <ThemeToggler />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="rounded-full">
+              <Button
+                title="Menu"
+                variant="outline"
+                size="icon"
+                className="rounded-full"
+              >
                 <PersonIcon width="18" height="18" />
               </Button>
             </DropdownMenuTrigger>

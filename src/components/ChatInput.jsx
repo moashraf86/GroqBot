@@ -125,6 +125,7 @@ export const ChatInput = ({
           />
           {isGenerating ? (
             <Button
+              title="Stop"
               size="icon"
               className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-primary text-primary-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
               type="button"
@@ -134,6 +135,7 @@ export const ChatInput = ({
             </Button>
           ) : (
             <Button
+              title="Send"
               size="icon"
               className="rounded-full p-0 w-10 h-10 disabled:opacity-30 bg-accent text-accent-foreground disabled:pointer-events-none disabled:bg-primary disabled:text-primary-foreground"
               type="submit"
