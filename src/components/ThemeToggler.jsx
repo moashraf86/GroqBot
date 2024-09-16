@@ -17,6 +17,7 @@ export function ThemeToggler() {
   };
   return (
     <Button
+      title="Toggle theme"
       variant="outline"
       size="icon"
       className="rounded-full"
