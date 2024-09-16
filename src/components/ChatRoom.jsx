@@ -20,14 +20,6 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
-  useEffect(() => {
-    // scroll to the bottom of the chat box when teh message first loads or updates
-    window.scrollTo(0, document.body.scrollHeight);
-
-    // store the conversation in the local storage
-    localStorage.setItem("conversation", JSON.stringify(messages));
-  }, [messages, isGenerating]);
-
   /**
    * Handle send message to bot
    */
@@ -39,7 +31,7 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
     stopFlag.current = false;
 
     // scroll to the bottom of the chat box
-    window.scrollTo(0, document.body.scrollHeight);
+    handleScrollToBottom();
 
     // set currentMsgIndex to messages.length + 1
     setCurrentMsgIndex(messages.length + 1);
@@ -153,6 +145,22 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
       setSelectedQuestion(null);
     }
   };
+
+  /**
+   * Handle the scroll to the bottom of the chat box
+   */
+  const handleScrollToBottom = () => {
+    if (document.body.scrollHeight > window.innerHeight) {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  };
+
+  useEffect(() => {
+    // scroll to the bottom of the chat box when teh message first loads or updates
+    handleScrollToBottom();
+    // store the conversation in the local storage
+    localStorage.setItem("conversation", JSON.stringify(messages));
+  }, [messages, isGenerating]);
 
   return (
     <main className="flex flex-col gap-4 max-w-3xl mx-auto">
