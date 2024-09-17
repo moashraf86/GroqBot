@@ -62,9 +62,7 @@ export const Header = ({ setIsGenerating }) => {
 
   return (
     <header
-      className={`sticky ${
-        scrollDirection === "up" ? "top-0" : "-top-full"
-      } w-full transition-[top] duration-300 z-50 bg-background/50 backdrop-blur py-4 border-b border-border`}
+      className={`sticky top-0  w-full transition-[top] duration-300 z-50 bg-background/50 backdrop-blur py-4 border-b border-border`}
     >
       <div className="container md:px-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold uppercase text-primary">
