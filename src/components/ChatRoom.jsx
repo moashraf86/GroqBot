@@ -165,7 +165,7 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   }, [messages]);
 
   return (
-    <main className="flex flex-col flex-grow gap-4 max-w-3xl mx-auto pt-6">
+    <main className="container flex flex-col flex-grow gap-4 max-w-3xl pt-6">
       {!messages || messages.length === 0 ? (
         <IntroSection setSelectedQuestion={setSelectedQuestion} />
       ) : null}
