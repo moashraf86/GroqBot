@@ -19,14 +19,12 @@ import {
 import { Button } from "./ui/button";
 import { useModel } from "../context/ModelProvider";
 import { useMessages } from "../context/MessagesProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CustomizationDialog } from "./CustomizationDialog";
 export const Header = ({ setIsGenerating }) => {
   const { model, setModel } = useModel();
   const { dispatch } = useMessages();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrollDirection, setScrollDirection] = useState(null);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Clear the chat
   const handleClearChat = () => {
@@ -35,35 +33,8 @@ export const Header = ({ setIsGenerating }) => {
     localStorage.removeItem("conversation");
   };
 
-  /**
-   * Handle scroll event
-   * detect the scroll direction and set the state accordingly
-   */
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-
-    if (currentScrollY > lastScrollY) {
-      setScrollDirection("down");
-    } else {
-      setScrollDirection("up");
-    }
-
-    setLastScrollY(currentScrollY);
-  };
-
-  useEffect(() => {
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]);
-
   return (
-    <header
-      className={`sticky top-0  w-full transition-[top] duration-300 z-50 bg-background/50 backdrop-blur py-4 border-b border-border`}
-    >
+    <header className="sticky inset-0 z-50 bg-background/50 backdrop-blur py-4 border-b border-border">
       <div className="container md:px-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold uppercase text-primary">
           <span className="text-accent font-open font-black ">//</span>
