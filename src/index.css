@@ -73,7 +73,7 @@
     @apply bg-background text-foreground font-open;
   }
   main {
-    min-height: calc(100vh - (var(--header-height) + var(--top-bar-height)));
+    /* min-height: calc(100vh - (var(--header-height) + var(--top-bar-height))); */
   }
   h1 {
     font-family: "Montserrat", sans-serif;
