@@ -150,8 +150,10 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
    * Handle the scroll to the bottom of the chat box
    */
   const handleScrollToBottom = () => {
-    if (document.body.scrollHeight > window.innerHeight) {
-      window.scrollTo(0, document.body.scrollHeight);
+    if (messages.length > 0) {
+      if (document.body.scrollHeight > window.innerHeight) {
+        window.scrollTo(0, document.body.scrollHeight);
+      }
     }
   };
 
@@ -160,7 +162,7 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
     handleScrollToBottom();
     // store the conversation in the local storage
     localStorage.setItem("conversation", JSON.stringify(messages));
-  }, [messages, isGenerating]);
+  }, [messages]);
 
   return (
     <main className="flex flex-col flex-grow gap-4 max-w-3xl mx-auto pt-6">
