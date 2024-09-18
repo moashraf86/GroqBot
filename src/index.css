@@ -104,15 +104,15 @@
 }
 
 .wmde-markdown ul {
-  @apply list-disc pl-4 flex flex-col gap-4;
+  @apply list-disc pl-6 flex flex-col gap-4;
 }
 
 .wmde-markdown pre {
-  @apply bg-primary-foreground rounded-md text-sm overflow-auto;
+  @apply bg-[#21262b] rounded-md text-sm overflow-auto;
 }
 
 .wmde-markdown pre code {
-  @apply bg-transparent block w-full font-code text-primary/75 whitespace-pre;
+  @apply bg-transparent block w-full font-code text-[#e2e5e9bf] whitespace-pre;
 }
 
 .wmde-markdown code {
@@ -130,3 +130,38 @@
 .wmde-markdown hr {
   @apply hidden;
 }
+
+.wmde-markdown table {
+  @apply overflow-x-auto;
+}
+
+.wmde-markdown table thead tr {
+  @apply bg-muted;
+}
+.wmde-markdown table tr,
+.wmde-markdown table tr:nth-child(2n) {
+  @apply bg-background;
+}
+
+.wmde-markdown table tr {
+  @apply border-t border-border;
+}
+.wmde-markdown table thead tr {
+  @apply border-t-0;
+}
+.wmde-markdown table thead th {
+  @apply border border-border;
+}
+
+.wmde-markdown table th,
+.wmde-markdown table td {
+  @apply border border-border;
+}
+/*
+.wmde-markdown table thead tr th:first-child {
+  @apply rounded-tl-md;
+}
+
+.wmde-markdown table thead tr th:last-child {
+  @apply rounded-tr-md;
+} */

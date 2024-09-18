@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
 import {
+  CheckIcon,
   CopyIcon,
   MixerHorizontalIcon,
   Pencil1Icon,
@@ -17,6 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+
 export const Message = ({
   content,
   role,
@@ -28,6 +31,7 @@ export const Message = ({
   setToEditMsg,
   onRegenerateResponse,
 }) => {
+  const [copied, setCopied] = useState(false);
   /**
    * Handle edit message
    */
@@ -41,8 +45,19 @@ export const Message = ({
    */
   const copyToClipboard = () => {
     navigator.clipboard.writeText(content);
+    // change the state of the component
+    setCopied(true);
   };
 
+  // sync the state with the clipboard
+  useEffect(() => {
+    if (copied) {
+      const id = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+      return () => clearTimeout(id);
+    }
+  }, [copied]);
   return (
     <>
       {role === "user" ? (
@@ -66,29 +81,43 @@ export const Message = ({
       ) : (
         // Assistant message
         <div className="grid gap-4 group">
-          <div className="flex flex-col gap-4 py-1 pr-4 text-base min-w-full max-w-full">
+          <div className="flex flex-col gap-4 py-1 text-base min-w-full max-w-full">
             {loading ? (
-              <div className="flex flex-col gap-2 border-l border-primary/30 pl-4">
-                <Skeleton className="w-3/4 h-3" />
-                <Skeleton className="w-1/2 h-3" />
-              </div>
+              <>
+                <div className="flex items-center justify-center w-10 h-10 bg-background text-accent rounded-full border border-border font-bold text-xl">
+                  {"//"}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="w-3/4 h-3" />
+                  <Skeleton className="w-1/2 h-3" />
+                </div>
+              </>
             ) : (
-              <div className="border-l border-primary/30 pl-4">
-                <MDEditor.Markdown source={content} />
-              </div>
+              <>
+                <div className="flex items-center justify-center w-10 h-10 bg-background text-accent rounded-full border border-border font-bold text-xl">
+                  {"//"}
+                </div>
+                <div className="">
+                  <MDEditor.Markdown source={content} />
+                </div>
+              </>
             )}
           </div>
           {/* Response Toolbar */}
           {!lastResponse ? (
             <div className="opacity-0 group-hover:opacity-100 flex gap-2">
               <Button
-                title="Copy"
+                title={copied ? "Copied" : "Copy"}
                 variant="ghost"
                 size="icon"
                 className="size-8"
                 onClick={copyToClipboard}
               >
-                <CopyIcon className="inline-block text-primary/70 size-[18px]" />
+                {copied ? (
+                  <CheckIcon className="inline-block text-primary/70 size-[18px]" />
+                ) : (
+                  <CopyIcon className="inline-block text-primary/70 size-[18px]" />
+                )}
               </Button>
             </div>
           ) : (
@@ -98,13 +127,17 @@ export const Message = ({
               }`}
             >
               <Button
-                title="Copy"
+                title={copied ? "Copied" : "Copy"}
                 variant="ghost"
                 size="icon"
                 className="size-8"
                 onClick={copyToClipboard}
               >
-                <CopyIcon className="inline-block text-primary/70 size-[18px]" />
+                {copied ? (
+                  <CheckIcon className="inline-block text-primary/70 size-[18px]" />
+                ) : (
+                  <CopyIcon className="inline-block text-primary/70 size-[18px]" />
+                )}
               </Button>
               <Button
                 title="Regenerate Response"

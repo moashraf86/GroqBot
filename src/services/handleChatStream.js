@@ -25,7 +25,7 @@ export const handleChatStream = async (response, dispatch, stopFlagFn) => {
       }
 
       // Delay the next chunk by 30 milliseconds to simulate a more human-like typing effect
-      await new Promise((resolve) => setTimeout(resolve, 30));
+      await new Promise((resolve) => setTimeout(resolve, 10));
     }
   }
 };

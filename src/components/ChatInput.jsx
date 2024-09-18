@@ -100,7 +100,7 @@ export const ChatInput = ({
   }, [toEditMsg, isEditing, selectedQuestion]);
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 bg-background z-50 flex flex-col gap-2 py-3">
+    <div className="sticky bottom-0 left-0 right-0 bg-background z-50 flex flex-col gap-2 py-3 px-4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
