@@ -11,7 +11,7 @@ export const ChatBox = ({
   onRegenerateResponse,
 }) => {
   return (
-    <div className="flex flex-col gap-8 grow pb-4">
+    <div className="flex flex-col gap-8 grow pb-4 px-4">
       {messages.map((message, index) => (
         <Message
           key={index}
