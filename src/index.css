@@ -114,6 +114,9 @@
 .wmde-markdown pre code {
   @apply bg-transparent block w-full font-code text-[#e2e5e9bf] whitespace-pre;
 }
+.wmde-markdown pre p {
+  @apply pl-4;
+}
 
 .wmde-markdown code {
   @apply bg-muted text-primary rounded-md pt-1 px-2 text-wrap text-sm;

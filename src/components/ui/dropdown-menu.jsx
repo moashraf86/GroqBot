@@ -110,7 +110,7 @@ DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName;
 
 const DropdownMenuRadioItem = React.forwardRef(
-  ({ className, children, checkIcon = true, ...props }, ref) => (
+  ({ className, children, checkIcon, ...props }, ref) => (
     <DropdownMenuPrimitive.RadioItem
       ref={ref}
       className={cn(

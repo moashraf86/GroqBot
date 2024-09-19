@@ -53,23 +53,38 @@ export const Header = ({ setIsGenerating }) => {
                 <PersonIcon width="18" height="18" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="min-w-[15rem]">
+            <DropdownMenuContent className="min-w-[17rem]">
               <DropdownMenuLabel className="uppercase tracking-wide text-xs font-bold text-primary/70">
                 Language Models
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup value={model} onValueChange={setModel}>
-                <DropdownMenuRadioItem value="llama3-70b-8192">
-                  llama3-70b-8192
+                <DropdownMenuRadioItem
+                  className="flex flex-col items-start justify-between gap-1 mb-1"
+                  value="llama3-70b-8192"
+                >
+                  <span>llama3-70b</span>
+                  <span className="text-xs text-primary/80">
+                    Advanced tasks and deep contexts
+                  </span>
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="gemma2-9b-it">
-                  gemma2-9b-it
+                <DropdownMenuRadioItem
+                  className="flex flex-col items-start justify-between gap-1 mb-1"
+                  value="gemma2-9b-it"
+                >
+                  <span>gemma2-9b-it</span>
+                  <span className="text-xs text-primary/80">
+                    Quick responses and general queries
+                  </span>
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="llama3-groq-70b-8192-tool-use-preview">
-                  llama3-groq-70b-8192
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="mixtral-8x7b-32768">
-                  mixtral-8x7b-32768
+                <DropdownMenuRadioItem
+                  className="flex flex-col items-start justify-between gap-1"
+                  value="llama3-groq-70b-8192-tool-use-preview"
+                >
+                  <span>llama3-groq-70b</span>
+                  <span className="text-xs text-primary/80">
+                    Multi-step and complex workflows
+                  </span>
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
               <DropdownMenuSeparator />
