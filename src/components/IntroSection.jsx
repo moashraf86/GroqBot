@@ -30,7 +30,7 @@ export const IntroSection = ({ setSelectedQuestion }) => {
   ];
 
   return (
-    <div className="flex flex-col grow  justify-center">
+    <div className="container flex flex-col grow">
       <div className="flex flex-col grow  gap-10 justify-center">
         <h1 className="grid gap-2 text-4xl font-bold text-start">
           <span className="text-accent">Hello,</span>{" "}
@@ -39,7 +39,7 @@ export const IntroSection = ({ setSelectedQuestion }) => {
           </span>
         </h1>
         {/* Start Questions */}
-        <div className=" overflow-x-auto grid grid-cols-2 gap-4 pb-2">
+        <div className="overflow-x-auto grid grid-cols-2 gap-4 pb-2">
           {questions.map((q) => (
             <Button
               variant="outline"
