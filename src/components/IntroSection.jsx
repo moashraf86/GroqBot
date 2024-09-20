@@ -30,7 +30,7 @@ export const IntroSection = ({ setSelectedQuestion }) => {
   ];
 
   return (
-    <div className="container flex flex-col grow">
+    <div className="container flex flex-col grow max-w-3xl">
       <div className="flex flex-col grow  gap-10 justify-center">
         <h1 className="grid gap-2 text-4xl font-bold text-start">
           <span className="text-accent">Hello,</span>{" "}

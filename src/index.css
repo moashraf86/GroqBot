@@ -70,6 +70,11 @@
   body {
     @apply bg-background text-foreground font-open;
   }
+  main {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) hsl(var(--background));
+  }
+
   h1 {
     font-family: "Montserrat", sans-serif;
   }
@@ -127,7 +132,7 @@
 }
 
 .wmde-markdown blockquote {
-  @apply border-l-4 border-primary-foreground bg-primary-foreground/10 text-primary-foreground p-4 my-4;
+  @apply border-l-4 border-border bg-background text-primary p-4 my-4 italic;
 }
 
 .wmde-markdown hr {
