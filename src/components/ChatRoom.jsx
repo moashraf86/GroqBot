@@ -4,10 +4,10 @@ import { ChatBox } from "./ChatBox";
 import { ChatInput } from "./ChatInput";
 import { useModel } from "../context/ModelProvider";
 import { useMessages } from "../context/MessagesProvider";
-import { createConversation } from "../services/groqService";
-import { handleChatStream } from "../services/handleChatStream";
 import { useSystemPrompts } from "../context/SystemPromptsProvider";
 import { IntroSection } from "./IntroSection";
+import { ScrollDownBtn } from "./ScrollDownBtn";
+import { handleRegenerate, handleSend } from "../services/chatHandlers";
 
 export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   const { model } = useModel();
@@ -20,129 +20,65 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
+  // track whether the user is at the bottom of the chat box or not
+  const [isUserAtBottom, setIsUserAtBottom] = useState(true);
+  const chatContainerRef = useRef(null);
+
   /**
    * Handle send message to bot
    */
-  const handleSend = async (message) => {
-    // set isGenerating to true
-    setIsGenerating(true);
-
-    // set stopFlag to false
-    stopFlag.current = false;
-
-    // scroll to the bottom of the chat box
-    handleScrollToBottom();
-
-    // set currentMsgIndex to messages.length + 1
-    setCurrentMsgIndex(messages.length + 1);
-
-    // dispatch the message to the bot
-    dispatch({ type: "SEND_MESSAGE", payload: message });
-
-    // Get the chat context from the previous messages
-    const chatContext = messages.map((msg) => msg.content).join("\n");
-
-    try {
-      // set loading to true
-      setLoading(true);
-
-      // check if the user is offline
-      if (!navigator.onLine) {
-        throw new Error("No internet connection. Please check your network.");
-      }
-
-      // create a new conversation with the assistant bot
-      const response = await createConversation(
-        message,
-        chatContext,
-        model,
-        systemPrompts
-      );
-
-      // set loading to false
-      setLoading(false);
-
-      // Handle the chat stream
-      await handleChatStream(response, dispatch, () => stopFlag.current);
-    } catch (error) {
-      // set loading to false
-      setLoading(false);
-
-      // receive the error message
-      dispatch({
-        type: "RECEIVE_MESSAGE",
-        payload: error.message,
-      });
-    } finally {
-      setIsGenerating(false);
-      setIsEditing(false);
-      setToEditMsg(null);
-      setCurrentMsgIndex(null);
-      setSelectedQuestion(null);
-    }
+  const sendMessage = (message) => {
+    handleSend({
+      message,
+      setIsGenerating,
+      stopFlag,
+      handleScrollToBottom,
+      messages,
+      dispatch,
+      setLoading,
+      model,
+      systemPrompts,
+      setIsEditing,
+      setToEditMsg,
+      setCurrentMsgIndex,
+      setSelectedQuestion,
+    });
   };
 
   /**
    * Handle regenerate response
    */
-  const handleRegenerateResponse = async (modifyPrompt) => {
-    // Get the last user message
-    const lastUserMessage = messages[messages.length - 2].content;
+  const regenerateResponse = (modifyPrompt) => {
+    handleRegenerate({
+      modifyPrompt,
+      messages,
+      dispatch,
+      setIsGenerating,
+      stopFlag,
+      setCurrentMsgIndex,
+      setIsEditing,
+      setToEditMsg,
+      setSelectedQuestion,
+      model,
+      setLoading,
+      systemPrompts,
+    });
+  };
 
-    // Delete the last pair of messages (user and assistant)
-    dispatch({ type: "DELETE_LAST_PAIR_MESSAGES" });
-
-    // Set isGenerating to true
-    setIsGenerating(true);
-
-    // Set stopFlag to false
-    stopFlag.current = false;
-
-    // Set currentMsgIndex to messages.length
-    setCurrentMsgIndex(messages.length - 1);
-
-    // Dispatch the message to the bot
-    dispatch({ type: "SEND_MESSAGE", payload: lastUserMessage });
-
-    // Get the chat context from the previous messages
-    const chatContext = messages.map((msg) => msg.content).join("\n");
-
-    try {
-      // set loading to true
-      setLoading(true);
-      // check if the user is offline
-      if (!navigator.onLine) {
-        throw new Error("No internet connection. Please check your network.");
+  /**
+   * Handle scroll event
+   * check if the user is at the bottom of the chat box
+   */
+  const handleScroll = () => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } =
+        chatContainerRef.current;
+      // check if the user is at the bottom of the chat box
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+        setIsUserAtBottom(true);
+      } else {
+        setIsUserAtBottom(false);
       }
-
-      // create a new conversation with the assistant bot
-      const response = await createConversation(
-        lastUserMessage,
-        chatContext,
-        model,
-        systemPrompts,
-        modifyPrompt
-      );
-
-      // set loading to false
-      setLoading(false);
-
-      // Handle the chat stream
-      await handleChatStream(response, dispatch, () => stopFlag.current);
-    } catch (error) {
-      // set loading to false
-      setLoading(false);
-      // receive the error message
-      dispatch({
-        type: "RECEIVE_MESSAGE",
-        payload: error.message,
-      });
-    } finally {
-      setIsGenerating(false);
-      setIsEditing(false);
-      setToEditMsg(null);
-      setCurrentMsgIndex(null);
-      setSelectedQuestion(null);
     }
   };
 
@@ -150,12 +86,24 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
    * Handle the scroll to the bottom of the chat box
    */
   const handleScrollToBottom = () => {
-    if (messages.length > 0) {
-      if (document.body.scrollHeight > window.innerHeight) {
-        window.scrollTo(0, document.body.scrollHeight);
-      }
+    if (chatContainerRef.current && isUserAtBottom) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   };
+
+  // add a scroll event listener to the chat container
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
@@ -165,7 +113,10 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   }, [messages]);
 
   return (
-    <main className="container px-0 flex flex-col flex-grow gap-4 max-w-3xl pt-6">
+    <main
+      ref={chatContainerRef}
+      className="px-0 flex flex-col flex-grow gap-4 pt-6 scroll-smooth overflow-y-auto max-h-[92dvh]"
+    >
       {!messages || messages.length === 0 ? (
         <IntroSection setSelectedQuestion={setSelectedQuestion} />
       ) : null}
@@ -177,11 +128,11 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
           isGenerating={isGenerating}
           setIsEditing={setIsEditing}
           setToEditMsg={setToEditMsg}
-          onRegenerateResponse={handleRegenerateResponse}
+          onRegenerateResponse={regenerateResponse}
         />
       )}
       <ChatInput
-        onSend={handleSend}
+        onSend={sendMessage}
         isGenerating={isGenerating}
         stopFlag={stopFlag}
         isEditing={isEditing}
@@ -190,6 +141,11 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
         selectedQuestion={selectedQuestion}
         setToEditMsg={setToEditMsg}
       />
+      {!isUserAtBottom &&
+      chatContainerRef.current.scrollHeight >
+        chatContainerRef.current.clientHeight ? (
+        <ScrollDownBtn chatContainerRef={chatContainerRef} />
+      ) : null}
     </main>
   );
 };
