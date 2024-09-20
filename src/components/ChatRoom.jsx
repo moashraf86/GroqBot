@@ -19,10 +19,9 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   const [toEditMsg, setToEditMsg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-
-  // track whether the user is at the bottom of the chat box or not
   const [isUserAtBottom, setIsUserAtBottom] = useState(true);
   const chatContainerRef = useRef(null);
+  const [prevScrollTop, setPrevScrollTop] = useState(0);
 
   /**
    * Handle send message to bot
@@ -73,8 +72,11 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
     if (chatContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } =
         chatContainerRef.current;
+      // track the previous scroll top
+      const isScrollingUp = scrollTop < prevScrollTop;
+      setPrevScrollTop(scrollTop);
       // check if the user is at the bottom of the chat box
-      if (scrollTop + clientHeight >= scrollHeight - 100) {
+      if (!isScrollingUp && scrollTop + clientHeight >= scrollHeight - 100) {
         setIsUserAtBottom(true);
       } else {
         setIsUserAtBottom(false);
@@ -97,7 +99,6 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
     if (chatContainerRef.current) {
       chatContainerRef.current.addEventListener("scroll", handleScroll);
     }
-
     return () => {
       if (chatContainerRef.current) {
         chatContainerRef.current.removeEventListener("scroll", handleScroll);
