@@ -74,9 +74,10 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
         chatContainerRef.current;
       // track the previous scroll top
       const isScrollingUp = scrollTop < prevScrollTop;
+
       setPrevScrollTop(scrollTop);
       // check if the user is at the bottom of the chat box
-      if (!isScrollingUp && scrollTop + clientHeight >= scrollHeight - 100) {
+      if (!isScrollingUp && scrollTop + clientHeight >= scrollHeight - 50) {
         setIsUserAtBottom(true);
       } else {
         setIsUserAtBottom(false);
@@ -104,7 +105,7 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
         chatContainerRef.current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [prevScrollTop, isUserAtBottom]);
 
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
@@ -143,8 +144,9 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
         setToEditMsg={setToEditMsg}
       />
       {!isUserAtBottom &&
-      chatContainerRef.current.scrollHeight >
-        chatContainerRef.current.clientHeight ? (
+      chatContainerRef.current.scrollHeight -
+        chatContainerRef.current.clientHeight >
+        chatContainerRef.current.scrollTop + 200 ? (
         <ScrollDownBtn chatContainerRef={chatContainerRef} />
       ) : null}
     </main>
