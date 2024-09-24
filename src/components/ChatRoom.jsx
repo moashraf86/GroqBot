@@ -6,7 +6,6 @@ import { useModel } from "../context/ModelProvider";
 import { useMessages } from "../context/MessagesProvider";
 import { useSystemPrompts } from "../context/SystemPromptsProvider";
 import { IntroSection } from "./IntroSection";
-import { ScrollDownBtn } from "./ScrollDownBtn";
 import { handleRegenerate, handleSend } from "../services/chatHandlers";
 
 export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
@@ -19,10 +18,7 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   const [toEditMsg, setToEditMsg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [isUserAtBottom, setIsUserAtBottom] = useState(true);
-  const chatContainerRef = useRef(null);
-  const [prevScrollTop, setPrevScrollTop] = useState(0);
-
+  const [isUserAtBottom, setIsUserAtBottom] = useState(false);
   /**
    * Handle send message to bot
    */
@@ -69,19 +65,13 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
    * check if the user is at the bottom of the chat box
    */
   const handleScroll = () => {
-    if (chatContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } =
-        chatContainerRef.current;
-      // track the previous scroll top
-      const isScrollingUp = scrollTop < prevScrollTop;
-
-      setPrevScrollTop(scrollTop);
-      // check if the user is at the bottom of the chat box
-      if (!isScrollingUp && scrollTop + clientHeight >= scrollHeight - 50) {
-        setIsUserAtBottom(true);
-      } else {
-        setIsUserAtBottom(false);
-      }
+    if (
+      window.scrollY + window.innerHeight >=
+      document.body.offsetHeight - 50
+    ) {
+      setIsUserAtBottom(true);
+    } else {
+      setIsUserAtBottom(false);
     }
   };
 
@@ -89,23 +79,19 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
    * Handle the scroll to the bottom of the chat box
    */
   const handleScrollToBottom = () => {
-    if (chatContainerRef.current && isUserAtBottom) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+    if (isUserAtBottom) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     }
   };
 
   // add a scroll event listener to the chat container
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.addEventListener("scroll", handleScroll);
-    }
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
-      if (chatContainerRef.current) {
-        chatContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [prevScrollTop, isUserAtBottom]);
+  }, [window.scrollY]);
 
   useEffect(() => {
     // scroll to the bottom of the chat box when teh message first loads or updates
@@ -115,10 +101,7 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
   }, [messages]);
 
   return (
-    <main
-      ref={chatContainerRef}
-      className="px-0 flex flex-col flex-grow gap-4 pt-6 scroll-smooth overflow-y-auto max-h-[92dvh]"
-    >
+    <main className="px-0 flex flex-col flex-grow gap-4 pt-6">
       {!messages || messages.length === 0 ? (
         <IntroSection setSelectedQuestion={setSelectedQuestion} />
       ) : null}
@@ -142,13 +125,8 @@ export const ChatRoom = ({ isGenerating, setIsGenerating }) => {
         toEditMsg={toEditMsg}
         selectedQuestion={selectedQuestion}
         setToEditMsg={setToEditMsg}
+        isUserAtBottom={isUserAtBottom}
       />
-      {!isUserAtBottom &&
-      chatContainerRef.current.scrollHeight -
-        chatContainerRef.current.clientHeight >
-        chatContainerRef.current.scrollTop + 200 ? (
-        <ScrollDownBtn chatContainerRef={chatContainerRef} />
-      ) : null}
     </main>
   );
 };

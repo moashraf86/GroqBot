@@ -46,7 +46,7 @@ export const IntroSection = ({ setSelectedQuestion }) => {
               size="lg"
               key={q.id}
               value={q.question}
-              className="h-auto p-4 border border-border rounded-lg justify-start text-start leading-relaxed text-wrap"
+              className="h-auto p-4 border border-border rounded-lg justify-start text-start leading-relaxed text-wrap transition-none"
               onClick={() => setSelectedQuestion(q.value)}
             >
               {q.question}
