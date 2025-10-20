@@ -10,7 +10,10 @@ function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <ModelProvider defaultModel="llama3-70b-8192" storageKey="vite-ui-model">
+      <ModelProvider
+        defaultModel="llama-3.3-70b-versatile"
+        storageKey="vite-ui-model"
+      >
         <MessagesProvider>
           <SystemPromptsProvider>
             <Header setIsGenerating={setIsGenerating} />

@@ -43,7 +43,7 @@ To set up and run GroqBot locally, follow these steps:
    Create a `.env` file in the root directory of the project and add the necessary environment variables. For example:
 
    ```env
-   REACT_APP_GROQ_API_KEY=your_groq_api_key
+   VITE_GROQ_API_KEY=your_groq_api_key
    ```
 
 4. **Run the Development Server**
